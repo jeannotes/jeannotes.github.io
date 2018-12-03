@@ -1,0 +1,58 @@
+#
+###################################
+# Site wide configuration
+####################################
+#
+title: Jean's notes
+email: j.z.feng@foxmail.com
+description: My personel notes
+url: # the base hostname & protocol for your site
+keywords: ["perception", "pointcloud", "slam"]
+
+###################################
+# Jekyll configuration
+####################################
+#
+timezone:          Asia/Shanghai
+markdown:          kramdown
+highlighter:       rouge
+excerpt_separator: <!--more-->
+permalink:         /articles/:year-:month/:title
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
+
+
+###################################
+# Site Owner configuration
+####################################
+owner:
+  name: Jean
+  avatar: leonids-logo.png
+  job: "perception engineer"
+  bio: "Jean's notes."
+  email:
+  disqus-shortname:
+  twitter: #username
+  facebook: #username
+  google:
+    plus: #username
+    analytics:
+    verify:
+    ad-client:
+    ad-slot:
+  github: #username
+  stackoverflow: #123456/username   from a "http://stackoverflow.com/users/123456/username" link
+  linkedin: #username
+  skype: #username
+  xing: #username
+  tumblr: #username
+  pinterest: #username
+  youtube: #username
+  weibo: #username
+  reddit: #username
+  telegram: #username
