@@ -5,9 +5,203 @@
     <description>My personel notes</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2018-12-03</pubDate>
-    <lastBuildDate>Mon, 03 Dec 2018 15:38:26 +0800</lastBuildDate>
+    <pubDate>2018-12-06</pubDate>
+    <lastBuildDate>Thu, 06 Dec 2018 14:58:32 +0800</lastBuildDate>
     <generator>Jekyll v3.7.4</generator>
+    
+      <item>
+        <title>Ground Removal</title>
+        <description>&lt;h2 id=&quot;sliding-windows-method&quot;&gt;Sliding Window’s method&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;push all data into a 0.1×0.1×0.1 $m^3$ per cell
+    &lt;ol&gt;
+      &lt;li&gt;sub item one&lt;/li&gt;
+      &lt;li&gt;sub item two&lt;/li&gt;
+      &lt;li&gt;sub item three&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;sort cells from high to low&lt;/li&gt;
+  &lt;li&gt;use sliding window with hight threshold
+    &lt;ol&gt;
+      &lt;li&gt;compute height difference of this cell&lt;/li&gt;
+      &lt;li&gt;also consider neighbour cells&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;plane-point-ransac-filter&quot;&gt;plane point ransac filter&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;choose approximate ground data&lt;/li&gt;
+  &lt;li&gt;use PCL’s ransac segmentation model&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModelCoefficients&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ptr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coefficients&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModelCoefficients&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PointIndices&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ptr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inliers&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PointIndices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Create the segmentation object
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SACSegmentation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PointXYZ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Optional
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setOptimizeCoefficients&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Mandatory
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setModelType&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SACMODEL_PLANE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setMethodType&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SAC_RANSAC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setDistanceThreshold&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.01&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setInputCloud&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cloud&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inliers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;coefficients&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;tricks-1&quot;&gt;tricks 1&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ground1.png&quot; alt=&quot;ground point Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  for one frame lidar data, we may choose the downside lidar(the red curve), this will save a lot of time.&lt;/p&gt;
+
+&lt;h3 id=&quot;tricks-2&quot;&gt;tricks 2&lt;/h3&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setDistanceThreshold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.05&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setAxis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;axis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;seg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setEpsAngle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deg2rad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;10.0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  the plane may vertical to vector(0,0,1), so we’d better to set axix to be (0,0,1) as well as the Eps angle.&lt;/p&gt;
+
+&lt;h3 id=&quot;tricks-3&quot;&gt;tricks 3&lt;/h3&gt;
+&lt;p&gt;  what if we may encounter two planes, like this:
+&lt;img src=&quot;/img/ground2.png&quot; alt=&quot;ground point Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  and if this time it’s not good we may seg it again(with last time’s coeef),Its interface is like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seg_ground_cloud&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModelCoefficients&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ptr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coefficients&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;n&quot;&gt;Eigen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Vector3f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;axis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;threshold&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.05&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;plane-point-angle_method1&quot;&gt;plane point angle_method1&lt;/h2&gt;
+&lt;p&gt;we have one frame data like this:
+&lt;img src=&quot;/img/ground3.png&quot; alt=&quot;ground point Image&quot; /&gt;
+for every column,data like this:
+&lt;img src=&quot;/img/ground4.png&quot; alt=&quot;ground point Image&quot; /&gt;
+we use this stratege, like this:
+&lt;img src=&quot;/img/ground5.png&quot; alt=&quot;ground point Image&quot; /&gt;
+if the angle we get is above threshold, we think it’s not ground point, and cotinue.And main precedure is under below:
+&lt;img src=&quot;/img/ground6.png&quot; alt=&quot;ground point Image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;plane-point-angle_method1-1&quot;&gt;plane point angle_method1&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;main difference&lt;/strong&gt;: not only consider vertical angle, but also horizontal angle .The author use BFS method to compute which are ground points, the algorithm is like this: 
+&lt;img src=&quot;/img/ground7.png&quot; alt=&quot;ground point Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ref: &lt;a href=&quot;(http://www.google.com/)&quot;&gt;PRBonn/depth_clustering&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>2018-12-06</pubDate>
+        <link>http://localhost:4000/articles/2018-08/Ground_Removal</link>
+        <guid isPermaLink="true">http://localhost:4000/articles/2018-08/Ground_Removal</guid>
+        
+        
+        <category>detection</category>
+        
+      </item>
+    
+      <item>
+        <title>Testing &quot;Readability&quot; with a Bunch of Text</title>
+        <description>&lt;h1 id=&quot;method1-baoxing&quot;&gt;method1: BaoXing&lt;/h1&gt;
+&lt;p&gt;ref: Curb-Intersection Feature Based Monte Carlo Localization on Urban Roads&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;segmentation of laser scan&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;![image.png&lt;/td&gt;
+      &lt;td&gt;center&lt;/td&gt;
+      &lt;td&gt;647x450](https://cdn.nlark.com/yuque/0/2018/png/134562/1542274808431-2bdf085b-12c1-4e0e-b3ec-9e4f28d7f531.png “”)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;piecewise function of laserscan&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;![image.png&lt;/td&gt;
+      &lt;td&gt;center&lt;/td&gt;
+      &lt;td&gt;544x172](https://cdn.nlark.com/yuque/0/2018/png/134562/1542280692169-d953a089-8fe6-48a7-b2cc-57c712b37c6b.png “”)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;use second-order differential filter to get local minimum-maximum detection point&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;![image.png&lt;/td&gt;
+      &lt;td&gt;center&lt;/td&gt;
+      &lt;td&gt;582x200](https://cdn.nlark.com/yuque/0/2018/png/134562/1542280807987-af331f62-7e8d-415f-8ef0-a33f889f20cf.png “”)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;we can think this as, after discussion woth Peng, we believe it’s one-order differential function(the same in the picture, red curve):&lt;/p&gt;
+&lt;div id=&quot;9qo3nz&quot; data-type=&quot;math&quot; data-display=&quot;block&quot; data-align=&quot;center&quot; data-src=&quot;https://cdn.nlark.com/__latex/af63c714c1f6b7b1e9b964cef99fdf52.svg&quot; data-text=&quot;f_1-f_2%2Bf_4-f_3&quot; data-width=&quot;138&quot; data-height=&quot;24&quot;&gt;&lt;img src=&quot;https://cdn.nlark.com/__latex/af63c714c1f6b7b1e9b964cef99fdf52.svg&quot; width=&quot;138&quot; /&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;classification of the scan
+    &lt;ol&gt;
+      &lt;li&gt;Road surface segment, shown as line CD, is selected first. It always locates between two edgepoints nearest to center of the sensor.&lt;/li&gt;
+      &lt;li&gt;Curb lines, (BC and DE), are searchedsubsequently, based on point C and D determined fromthe former step.&lt;/li&gt;
+      &lt;li&gt;Rest segments are other features off the road.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;monte-carlo localization with these features
+    &lt;ol&gt;
+      &lt;li&gt;prediction with odom(easy part)&lt;/li&gt;
+      &lt;li&gt;correction with two kind of features&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;curb point&lt;/li&gt;
+  &lt;li&gt;intersection point&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;![image.png&lt;/td&gt;
+      &lt;td&gt;center&lt;/td&gt;
+      &lt;td&gt;626x324](https://cdn.nlark.com/yuque/0/2018/png/134562/1542281566591-1dcf8a60-fe29-45b3-a889-89541057a48b.png “”)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;resampling
+    &lt;ul&gt;
+      &lt;li&gt;curb-intersection measurement model&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;LIDAR-VSA1
+accumulate these curb point, and translate them to last coordinate&lt;/li&gt;
+  &lt;li&gt;LIDAR-VSA2
+it’s just two parallel point, tagent to CD.And whenever at intersection, we get two these points&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;method2&quot;&gt;method2&lt;/h1&gt;
+
+</description>
+        <pubDate>2018-12-06</pubDate>
+        <link>http://localhost:4000/articles/2012-05/curb1-post</link>
+        <guid isPermaLink="true">http://localhost:4000/articles/2012-05/curb1-post</guid>
+        
+        
+        <category>paragraph</category>
+        
+      </item>
     
       <item>
         <title>Sample Post</title>
@@ -119,7 +313,7 @@
 
 &lt;p class=&quot;notice&quot;&gt;&lt;strong&gt;Watch out!&lt;/strong&gt; You can also add notices by appending &lt;code class=&quot;highlighter-rouge&quot;&gt;{: .notice}&lt;/code&gt; to a paragraph.&lt;/p&gt;
 </description>
-        <pubDate>2018-12-03</pubDate>
+        <pubDate>2018-12-06</pubDate>
         <link>http://localhost:4000/articles/2011-03/sample-post</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2011-03/sample-post</guid>
         
