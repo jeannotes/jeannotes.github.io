@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Just about everything you'll need to style in the theme: headings, paragraphs, blockquotes, tables, code blocks, and more.">
+  <meta name="keywords" content="perception, pointcloud, and slam">
+  <meta name="author" content="Ground Removal | Jean&#39;s notes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Ground Removal | Jean&#39;s notes">
+  <meta name="twitter:description" content="Just about everything you&#39;ll need to style in the theme: headings, paragraphs, blockquotes, tables, code blocks, and more.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2018-08/Ground_Removal">
+  <meta property="og:title" content="Ground Removal | Jean&#39;s notes">
+  <meta property="og:description" content="Just about everything you&#39;ll need to style in the theme: headings, paragraphs, blockquotes, tables, code blocks, and more.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Ground Removal | Jean's notes</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2018-08/Ground_Removal">
+  <link rel="alternate" type="application/rss+xml" title="Jean&#39;s notes" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/">
+    <img src="http://localhost:4000/img/leonids-logo.png" alt="" class="avatar">
+  </a>
+  
+  <a href="http://localhost:4000/" class="author_name">Jean</a>
+  <span class="author_job">perception engineer</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Ground Removal">Ground Removal</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        10 AUG 2018
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    2 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h2 id="sliding-windows-method">Sliding Window’s method</h2>
+
+<ol>
+  <li>push all data into a 0.1×0.1×0.1 $m^3$ per cell
+    <ol>
+      <li>sub item one</li>
+      <li>sub item two</li>
+      <li>sub item three</li>
+    </ol>
+  </li>
+  <li>sort cells from high to low</li>
+  <li>use sliding window with hight threshold
+    <ol>
+      <li>compute height difference of this cell</li>
+      <li>also consider neighbour cells</li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="plane-point-ransac-filter">plane point ransac filter</h2>
+<ol>
+  <li>choose approximate ground data</li>
+  <li>use PCL’s ransac segmentation model</li>
+</ol>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">coefficients</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">inliers</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">);</span>
+    <span class="c1">// Create the segmentation object
+</span>    <span class="n">pcl</span><span class="o">::</span><span class="n">SACSegmentation</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">seg</span><span class="p">;</span>
+    <span class="c1">// Optional
+</span>    <span class="n">seg</span><span class="p">.</span><span class="n">setOptimizeCoefficients</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="c1">// Mandatory
+</span>    <span class="n">seg</span><span class="p">.</span><span class="n">setModelType</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SACMODEL_PLANE</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMethodType</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SAC_RANSAC</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setDistanceThreshold</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">);</span>
+
+    <span class="n">seg</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">segment</span> <span class="p">(</span><span class="o">*</span><span class="n">inliers</span><span class="p">,</span> <span class="o">*</span><span class="n">coefficients</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="tricks-1">tricks 1</h3>
+
+<p><img src="/img/ground1.png" alt="ground point Image" /></p>
+
+<p>  for one frame lidar data, we may choose the downside lidar(the red curve), this will save a lot of time.</p>
+
+<h3 id="tricks-2">tricks 2</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">seg</span><span class="p">.</span><span class="n">setDistanceThreshold</span><span class="p">(</span> <span class="mf">0.05</span> <span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setAxis</span><span class="p">(</span> <span class="n">axis</span> <span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setEpsAngle</span><span class="p">(</span> <span class="n">pcl</span><span class="o">::</span><span class="n">deg2rad</span><span class="p">(</span> <span class="mf">10.0</span> <span class="p">)</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<p>  the plane may vertical to vector(0,0,1), so we’d better to set axix to be (0,0,1) as well as the Eps angle.</p>
+
+<h3 id="tricks-3">tricks 3</h3>
+<p>  what if we may encounter two planes, like this:
+<img src="/img/ground2.png" alt="ground point Image" /></p>
+
+<p>  and if this time it’s not good we may seg it again(with last time’s coeef),Its interface is like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">void</span> <span class="n">seg_ground_cloud</span><span class="p">(</span> <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&amp;</span> <span class="n">coefficients</span><span class="p">,</span>
+                          <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3f</span><span class="o">&amp;</span> <span class="n">axis</span><span class="p">,</span>
+                          <span class="kt">int</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="plane-point-angle_method1">plane point angle_method1</h2>
+<p>we have one frame data like this:
+<img src="/img/ground3.png" alt="ground point Image" />
+for every column,data like this:
+<img src="/img/ground4.png" alt="ground point Image" />
+we use this stratege, like this:
+<img src="/img/ground5.png" alt="ground point Image" />
+if the angle we get is above threshold, we think it’s not ground point, and cotinue.And main precedure is under below:
+<img src="/img/ground6.png" alt="ground point Image" /></p>
+
+<h2 id="plane-point-angle_method1-1">plane point angle_method1</h2>
+
+<p><strong>main difference</strong>: not only consider vertical angle, but also horizontal angle .The author use BFS method to compute which are ground points, the algorithm is like this: 
+<img src="/img/ground7.png" alt="ground point Image" /></p>
+
+<p>ref: <a href="(http://www.google.com/)">PRBonn/depth_clustering</a></p>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2018-08/Ground_Removal" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2018-08/Ground_Removal" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2018-08/Ground_Removal" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2018-08/Ground_Removal" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2018-08/Ground_Removal" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2018 Jean. Powered by <a href="http://jekyllrb.com/">Jekyll</a>, <a href="http://github.com/renyuanz/leonids/">leonids theme</a> made with <i class="fa fa-heart heart-icon"></i>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>
